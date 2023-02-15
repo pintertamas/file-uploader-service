@@ -1,5 +1,6 @@
 package com.tamaspinter.configservice.service;
 
+import com.tamaspinter.configservice.exception.AuthenticationMethodUnchangedException;
 import com.tamaspinter.configservice.exception.ProviderAlreadyExistsException;
 import com.tamaspinter.configservice.model.AuthType;
 import com.tamaspinter.configservice.model.StorageProvider;
@@ -24,8 +25,11 @@ public class StorageProviderService {
         return storageProviderRepository.save(newProvider);
     }
 
-    public void editStorageProviderAuthType(String name, AuthType newAuthType) {
+    public void editStorageProviderAuthType(String name, AuthType newAuthType) throws AuthenticationMethodUnchangedException {
         StorageProvider storageProvider = storageProviderRepository.findStorageProviderByName(name);
+        if (newAuthType.equals(storageProvider.getAuthType())) {
+            throw new AuthenticationMethodUnchangedException(newAuthType);
+        }
         storageProvider.setAuthType(newAuthType);
         storageProviderRepository.save(storageProvider);
     }
