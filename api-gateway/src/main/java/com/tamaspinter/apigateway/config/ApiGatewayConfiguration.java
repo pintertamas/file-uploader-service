@@ -24,6 +24,10 @@ public class ApiGatewayConfiguration {
                         .filters(f -> f.filter(filter))
                         .uri("lb://auth-service"))
 
+                .route("config-service", r -> r.path("/config/**", "/storage-provider/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://config-service"))
+
                 .build();
     }
 }

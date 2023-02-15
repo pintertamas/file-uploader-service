@@ -60,7 +60,7 @@ public class UserController {
     @PatchMapping
     public ResponseEntity<User> editUser(@Valid @RequestBody UserDTO editedUserDTO, @RequestHeader HttpHeaders headers) {
         try {
-            User user = jwtUtil.getUserFromToken(headers);
+            User user = jwtUtil.getUserFromHeader(headers);
             User editedUser = editedUserDTO.userFromDTOWithId(user.getId());
             user = userService.updateProfile(editedUser);
             return new ResponseEntity<>(user, HttpStatus.OK);
@@ -80,7 +80,7 @@ public class UserController {
     @PatchMapping("/edit-password")
     public ResponseEntity<String> editPassword(@RequestBody String password, @RequestHeader HttpHeaders headers) {
         try {
-            User user = jwtUtil.getUserFromToken(headers);
+            User user = jwtUtil.getUserFromHeader(headers);
             log.info(user.toString());
             userService.editPassword(user.getId(), password);
             return new ResponseEntity<>(user.getPassword(), HttpStatus.OK);

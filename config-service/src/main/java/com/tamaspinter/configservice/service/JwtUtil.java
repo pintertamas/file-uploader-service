@@ -1,11 +1,13 @@
-package com.tamaspinter.userservice.service;
+package com.tamaspinter.configservice.service;
 
-import com.tamaspinter.userservice.exceptions.UserNotFoundException;
-import com.tamaspinter.userservice.model.User;
-import com.tamaspinter.userservice.repository.UserRepository;
+import com.tamaspinter.configservice.exception.UserNotFoundException;
+import com.tamaspinter.configservice.model.User;
+import com.tamaspinter.configservice.proxy.UserProxy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +19,8 @@ import java.util.Map;
 @Service
 public class JwtUtil {
 
-    private final JwtDecoder jwtDecoder;
-    private final UserRepository userRepository;
+    final JwtDecoder jwtDecoder;
+    final UserProxy userProxy;
 
     private String getTokenFromHeader(HttpHeaders headers) {
         return headers.getOrDefault("Authorization", new ArrayList<>()).get(0);
@@ -28,14 +30,19 @@ public class JwtUtil {
         String token = getTokenFromHeader(headers);
         token = token.split(" ")[1].trim();
         String username = this.getAllClaimsFromToken(token).getOrDefault("sub", false).toString();
-        User user = userRepository.findUserByUsername(username);
-        if (user == null) {
+        ResponseEntity<User> user = userProxy.findUserByUsername(username);
+        if (user.getBody() == null || !user.getStatusCode().equals(HttpStatus.OK)) {
             throw new UserNotFoundException(username);
         }
-        return user;
+        return user.getBody();
     }
 
-    private Map<String, Object> getAllClaimsFromToken(String token) {
+    public Long getUserIdFromToken(HttpHeaders headers) throws UserNotFoundException {
+        User user = getUserFromHeader(headers);
+        return user.getId();
+    }
+
+    public Map<String, Object> getAllClaimsFromToken(String token) {
         try {
             return jwtDecoder.decode(token).getClaims();
         } catch (Exception e) {
