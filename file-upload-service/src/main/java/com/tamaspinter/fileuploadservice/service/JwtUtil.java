@@ -1,8 +1,9 @@
-package com.tamaspinter.configservice.service;
+package com.tamaspinter.fileuploadservice.service;
 
-import com.tamaspinter.configservice.exception.UserNotFoundException;
-import com.tamaspinter.configservice.model.User;
-import com.tamaspinter.configservice.proxy.UserProxy;
+import com.tamaspinter.fileuploadservice.exception.UserNotFoundException;
+import com.tamaspinter.fileuploadservice.model.User;
+import com.tamaspinter.fileuploadservice.proxy.UserProxy;
+import com.tamaspinter.fileuploadservice.model.File;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;

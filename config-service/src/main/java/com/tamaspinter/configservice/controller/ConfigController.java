@@ -31,8 +31,8 @@ public class ConfigController {
     @PostMapping("/create")
     ResponseEntity<Config> createConfig(@RequestBody Config config, @RequestHeader HttpHeaders headers) {
         try {
-            User user = jwtUtil.getUserFromHeader(headers);
-            config.setUserId(user.getId());
+            Long userId = jwtUtil.getUserIdFromHeader(headers);
+            config.setUserId(userId);
             Config newConfig = configService.createConfiguration(config);
             return new ResponseEntity<>(newConfig, HttpStatus.OK);
         } catch (ConfigAlreadyExistsException e) {
@@ -47,8 +47,8 @@ public class ConfigController {
     @GetMapping("/list")
     ResponseEntity<List<Config>> getConfigsByUser(@RequestHeader HttpHeaders headers) {
         try {
-            User user = jwtUtil.getUserFromHeader(headers);
-            List<Config> configs = configService.getUserConfigs(user.getId());
+            Long userId = jwtUtil.getUserIdFromHeader(headers);
+            List<Config> configs = configService.getUserConfigs(userId);
             return new ResponseEntity<>(configs, HttpStatus.OK);
         } catch (ConfigNotFoundException e) {
             log.error(e.getMessage());
@@ -62,9 +62,9 @@ public class ConfigController {
     @PatchMapping("/{providerName}")
     ResponseEntity<Config> editConfigAtProvider(@PathVariable String providerName, @RequestBody String credentials, @RequestHeader HttpHeaders headers) {
         try {
-            User user = jwtUtil.getUserFromHeader(headers);
-            Config config = configService.getUserConfigAtProvider(user.getId(), providerName);
-            configService.editConfigCredentials(user.getId(), providerName, credentials);
+            Long userId = jwtUtil.getUserIdFromHeader(headers);
+            Config config = configService.getUserConfigAtProvider(userId, providerName);
+            configService.editConfigCredentials(userId, providerName, credentials);
             return new ResponseEntity<>(config, HttpStatus.OK);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -75,8 +75,8 @@ public class ConfigController {
     @GetMapping("/{providerName}")
     ResponseEntity<Config> getConfigByProviderName(@PathVariable String providerName, @RequestHeader HttpHeaders headers) {
         try {
-            User user = jwtUtil.getUserFromHeader(headers);
-            Config config = configService.getUserConfigAtProvider(user.getId(), providerName);
+            Long userId = jwtUtil.getUserIdFromHeader(headers);
+            Config config = configService.getUserConfigAtProvider(userId, providerName);
             return new ResponseEntity<>(config, HttpStatus.OK);
         } catch (ConfigNotFoundException | StorageProviderNotFoundException e) {
             log.error(e.getMessage());

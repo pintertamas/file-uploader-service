@@ -28,6 +28,14 @@ public class ApiGatewayConfiguration {
                         .filters(f -> f.filter(filter))
                         .uri("lb://config-service"))
 
+                .route("sharing-service", r -> r.path("/share/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://sharing-service"))
+
+                .route("file-upload-service", r -> r.path("/upload/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://file-upload-service"))
+
                 .build();
     }
 }

@@ -1,8 +1,8 @@
-package com.tamaspinter.configservice.service;
+package com.tamaspinter.sharingservice.service;
 
-import com.tamaspinter.configservice.exception.UserNotFoundException;
-import com.tamaspinter.configservice.model.User;
-import com.tamaspinter.configservice.proxy.UserProxy;
+import com.tamaspinter.sharingservice.exception.UserNotFoundException;
+import com.tamaspinter.sharingservice.model.User;
+import com.tamaspinter.sharingservice.proxy.UserProxy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
