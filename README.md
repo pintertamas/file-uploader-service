@@ -1,6 +1,6 @@
-##Tesztfeladat:
+## Tesztfeladat:
 
-####Fájlfeltöltő service backend:
+#### Fájlfeltöltő service backend:
 
 Az alkalmazás backend-je egy api-n keresztül kapott fájlt képes letárolni egy vagy több
 fájlmegosztón.
