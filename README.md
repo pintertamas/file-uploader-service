@@ -14,6 +14,7 @@ oneDrive-ból egyszerre kettő nem lehet.
 
 Az alkalmazásunkon keresztül lekérhetjük a feltöltött fájljaink listáját. Ezt lehessen szűrni
 tárhelyre, illetve feltöltés ideje és fájlnév szerint.
+
 Az alkalmazásnak tudnia kell felhasználókat kezelni. Minden user csak a saját beállított
 tárhelyeire tud feltölteni.
 
