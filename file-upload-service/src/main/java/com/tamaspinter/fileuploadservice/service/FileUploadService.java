@@ -1,5 +1,6 @@
 package com.tamaspinter.fileuploadservice.service;
 
+import com.tamaspinter.fileuploadservice.exception.FileNotFoundException;
 import com.tamaspinter.fileuploadservice.exception.StorageProviderNotFoundException;
 import com.tamaspinter.fileuploadservice.model.AuthType;
 import com.tamaspinter.fileuploadservice.model.Config;
@@ -25,7 +26,6 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -48,6 +48,14 @@ public class FileUploadService {
         Timestamp nowInTimestamps = new Timestamp(nowInMillis);
         file.setCreationTime(nowInTimestamps);
         return file;
+    }
+
+    public List<File> getFilesByIds(List<Long> fileIds) throws FileNotFoundException {
+        List<File> files = fileRepository.findAllById(fileIds);
+        if (files.isEmpty()) {
+            throw new FileNotFoundException();
+        }
+        return files;
     }
 
     private List<StorageProvider> getProvidersFromNames(List<String> providerNames) {

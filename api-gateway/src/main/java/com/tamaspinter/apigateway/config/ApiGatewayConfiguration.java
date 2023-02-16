@@ -36,6 +36,10 @@ public class ApiGatewayConfiguration {
                         .filters(f -> f.filter(filter))
                         .uri("lb://file-upload-service"))
 
+                .route("file-retrieval-service", r -> r.path("/files/**")
+                        .filters(f -> f.filter(filter))
+                        .uri("lb://file-retrieval-service"))
+
                 .build();
     }
 }

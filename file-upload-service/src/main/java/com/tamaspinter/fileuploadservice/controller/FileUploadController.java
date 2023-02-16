@@ -1,5 +1,6 @@
 package com.tamaspinter.fileuploadservice.controller;
 
+import com.tamaspinter.fileuploadservice.exception.FileNotFoundException;
 import com.tamaspinter.fileuploadservice.exception.UserNotFoundException;
 import com.tamaspinter.fileuploadservice.model.File;
 import com.tamaspinter.fileuploadservice.service.FileUploadService;
@@ -48,6 +49,20 @@ public class FileUploadController {
             boolean isOwner = fileUploadService.isOwner(userId, fileId);
             return new ResponseEntity<>(isOwner, HttpStatus.OK);
         } catch (UserNotFoundException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping("/files-by-ids")
+    ResponseEntity<List<File>> getFilesByIds(@RequestBody List<Long> fileIds) {
+        try {
+            List<File> files = fileUploadService.getFilesByIds(fileIds);
+            return new ResponseEntity<>(files, HttpStatus.OK);
+        } catch (FileNotFoundException e) {
             log.error(e.getMessage());
             return ResponseEntity.notFound().build();
         } catch (Exception e) {
